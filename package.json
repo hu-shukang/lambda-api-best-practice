@@ -1,0 +1,40 @@
+{
+  "name": "lambda-api-best-practice",
+  "version": "0.0.1",
+  "private": true,
+  "description": "This project contains source code and supporting files for a serverless application that you can deploy with CDK.",
+  "license": "MIT-0",
+  "type": "commonjs",
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "format": "prettier . --write",
+    "lint": "eslint . --fix",
+    "test": "export POWERTOOLS_DEV=true && vitest --run --silent",
+    "deploy:api:it": "cdk deploy bp-api-stack-it --require-approval never -c env=it"
+  },
+  "devDependencies": {
+    "@aws-lambda-powertools/logger": "^2.22.0",
+    "@aws-lambda-powertools/parser": "^2.22.0",
+    "@eslint/js": "^9.30.0",
+    "@middy/core": "^4.7.0",
+    "@middy/http-error-handler": "^6.3.2",
+    "@trivago/prettier-plugin-sort-imports": "^5.2.2",
+    "@types/aws-lambda": "^8.10.150",
+    "@types/node": "24.0.3",
+    "aws-cdk": "^2.1019.1",
+    "aws-cdk-lib": "^2.202.0",
+    "constructs": "^10.4.2",
+    "esbuild": "^0.25.5",
+    "eslint": "^9.30.0",
+    "eslint-config-prettier": "^10.1.5",
+    "eslint-plugin-prettier": "^5.5.1",
+    "globals": "^16.2.0",
+    "prettier": "3.6.2",
+    "source-map-support": "^0.5.21",
+    "tsx": "^4.20.3",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.35.0",
+    "vitest": "^3.0.5",
+    "zod": "^3.25.67"
+  }
+}
