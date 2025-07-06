@@ -1,15 +1,16 @@
 import { Logger } from '@aws-lambda-powertools/logger';
+import { search } from '@aws-lambda-powertools/logger/correlationId';
 import { injectLambdaContext } from '@aws-lambda-powertools/logger/middleware';
 import { parser } from '@aws-lambda-powertools/parser/middleware';
 import middy from '@middy/core';
 import httpErrorHandler from '@middy/http-error-handler';
-import { APIGatewayProxyResultV2 } from 'aws-lambda';
+import { APIGatewayProxyResult } from 'aws-lambda';
 
 import { ExtendedAPIGatewayEvent, schema } from './schema';
 
-const logger = new Logger({ serviceName: 'ユーザ登録' });
+const logger = new Logger({ serviceName: 'ユーザ登録', correlationIdSearchFn: search });
 
-const functionHandler = async (event: ExtendedAPIGatewayEvent): Promise<APIGatewayProxyResultV2> => {
+const functionHandler = async (event: ExtendedAPIGatewayEvent): Promise<APIGatewayProxyResult> => {
   const { age, name } = event.body;
   logger.info(`name: ${name}, age: ${age}`);
   return {

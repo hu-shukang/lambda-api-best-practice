@@ -1,6 +1,7 @@
 import * as cdk from 'aws-cdk-lib';
 import * as apigateway from 'aws-cdk-lib/aws-apigateway';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
+import { NodejsFunction, NodejsFunctionProps, OutputFormat } from 'aws-cdk-lib/aws-lambda-nodejs';
 import { Construct } from 'constructs';
 import path from 'path';
 
@@ -15,31 +16,27 @@ export class APIStack extends cdk.Stack {
 
     const { lambdaAccessRole } = Utils.getRoles(this, context);
 
-    const commonLayer = new lambda.LayerVersion(this, `${apiName}-common-layer${suffix}`, {
-      layerVersionName: `${apiName}-common-layer${suffix}`,
-      compatibleRuntimes: [lambda.Runtime.NODEJS_22_X],
-      code: lambda.Code.fromAsset(path.join(__dirname, '../../src/layers/common-layer')),
-    });
-
-    const lambdaCommonProps: Omit<lambda.FunctionProps, 'code'> = {
+    const lambdaCommonProps: NodejsFunctionProps = {
       runtime: lambda.Runtime.NODEJS_22_X,
-      layers: [commonLayer],
       role: lambdaAccessRole,
       timeout: cdk.Duration.minutes(15),
       memorySize: 1024,
-      handler: 'index.handler',
+      handler: 'handler',
+      bundling: {
+        format: OutputFormat.ESM,
+      },
     };
 
-    const userPostLambda = new lambda.Function(this, `${apiName}-user-post-lambda${suffix}`, {
+    const userPostLambda = new NodejsFunction(this, `${apiName}-user-post-lambda${suffix}`, {
       ...lambdaCommonProps,
       functionName: `${apiName}-user-post-lambda${suffix}`,
-      code: lambda.Code.fromAsset(path.join(__dirname, '../../src/functions/user/post')),
+      entry: path.join(__dirname, '../../src/functions/user/post/index.ts'),
     });
 
-    const userListLambda = new lambda.Function(this, `${apiName}-user-list-lambda${suffix}`, {
+    const userListLambda = new NodejsFunction(this, `${apiName}-user-list-lambda${suffix}`, {
       ...lambdaCommonProps,
       functionName: `${apiName}-user-list-lambda${suffix}`,
-      code: lambda.Code.fromAsset(path.join(__dirname, '../../src/functions/user/list')),
+      entry: path.join(__dirname, '../../src/functions/user/list/index.ts'),
     });
 
     const api = new apigateway.RestApi(this, `${apiName}${suffix}`, {

@@ -17,7 +17,7 @@ if (!context) {
 
 const { apiName, fileAssetsBucketName, account, region } = context;
 
-const synthesizer = new cdk.DefaultStackSynthesizer({
+const synthesizer = new cdk.CliCredentialsStackSynthesizer({
   fileAssetsBucketName: fileAssetsBucketName,
   bucketPrefix: `cdk-${apiName}-${env}`,
   qualifier: `cdk-${apiName}-${env}`,

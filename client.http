@@ -1,0 +1,9 @@
+
+@hostname = dnk1bzx50b.execute-api.ap-northeast-1.amazonaws.com/
+@stage = prod
+@host = https://{{hostname}}/{{stage}}
+@contentType = application/json
+
+
+# user list
+GET https://dnk1bzx50b.execute-api.ap-northeast-1.amazonaws.com/prod/user?name=abc HTTP/1.1

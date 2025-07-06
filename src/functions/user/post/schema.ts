@@ -1,8 +1,8 @@
 import { JSONStringified } from '@aws-lambda-powertools/parser/helpers';
-import { APIGatewayProxyEventV2Schema } from '@aws-lambda-powertools/parser/schemas/api-gatewayv2';
+import { APIGatewayProxyEventSchema } from '@aws-lambda-powertools/parser/schemas/api-gateway';
 import { z } from 'zod';
 
-export const schema = APIGatewayProxyEventV2Schema.extend({
+export const schema = APIGatewayProxyEventSchema.extend({
   body: JSONStringified(
     z.object({
       name: z.string(),
