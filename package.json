@@ -15,7 +15,6 @@
     "@aws-lambda-powertools/logger": "^2.22.0",
     "@aws-lambda-powertools/parser": "^2.22.0",
     "@middy/core": "^4.7.0",
-    "@middy/http-error-handler": "^6.3.2",
     "zod": "^3.25.67"
   },
   "devDependencies": {
@@ -23,6 +22,7 @@
     "@trivago/prettier-plugin-sort-imports": "^5.2.2",
     "@types/aws-lambda": "^8.10.150",
     "@types/node": "24.0.3",
+    "@vitest/coverage-v8": "^3.2.4",
     "aws-cdk": "^2.1019.1",
     "aws-cdk-lib": "^2.202.0",
     "constructs": "^10.4.2",

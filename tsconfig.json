@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
-    "target": "ES2022", // 或者更高
-    "module": "NodeNext", // 或者 "ESNext"
-    "moduleResolution": "NodeNext", // 通常与 module 保持一致
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
     "lib": ["es2022"],
     "strict": true,
     "noImplicitAny": true,
@@ -16,7 +16,12 @@
     "inlineSourceMap": true,
     "inlineSources": true,
     "experimentalDecorators": true,
-    "strictPropertyInitialization": false
+    "strictPropertyInitialization": false,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"],
+      "~/*": ["test/*"]
+    }
   },
   "exclude": ["node_modules"],
   "include": ["src", "tests", "cdk", "vitest.config.ts"]

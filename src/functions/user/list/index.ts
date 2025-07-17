@@ -3,8 +3,9 @@ import { search } from '@aws-lambda-powertools/logger/correlationId';
 import { injectLambdaContext } from '@aws-lambda-powertools/logger/middleware';
 import { parser } from '@aws-lambda-powertools/parser/middleware';
 import middy from '@middy/core';
-import httpErrorHandler from '@middy/http-error-handler';
 import { APIGatewayProxyResult } from 'aws-lambda';
+
+import { httpErrorHandler } from '@/utils/error-handler.util';
 
 import { ExtendedAPIGatewayEvent, schema } from './schema';
 
@@ -21,6 +22,6 @@ const functionHandler = async (event: ExtendedAPIGatewayEvent): Promise<APIGatew
 
 // Wrap the handler with middy and apply the middlewares
 export const handler = middy(functionHandler)
-  .use(httpErrorHandler())
+  .use(httpErrorHandler({ logger }))
   .use(injectLambdaContext(logger, { logEvent: true, correlationIdPath: 'requestContext.requestId' }))
   .use(parser({ schema: schema }));

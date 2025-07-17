@@ -1,7 +1,30 @@
-import { defineProject } from 'vitest/config';
+import path from 'path';
+import { defineConfig } from 'vitest/config';
 
-export default defineProject({
+export default defineConfig({
   test: {
-    environment: 'node',
+    coverage: {
+      provider: 'v8',
+      exclude: [
+        '**/node_modules/**',
+        '**/dist/**',
+        '**/test/**',
+        '**/cdk/**',
+        '**/cdk.out/**',
+        'eslint.config.mjs',
+        'prettier.config.mjs',
+        'vitest.config.ts',
+      ],
+    },
+    env: {
+      SIGNED_KEY_SECRET_NAME: 'test_secret',
+      DOMAIN: 'test.com',
+    },
+  },
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+      '~': path.resolve(__dirname, './test'),
+    },
   },
 });
