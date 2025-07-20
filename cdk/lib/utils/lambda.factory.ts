@@ -37,6 +37,7 @@ export class LambdaFactory {
       functionName: functionName,
       entry: path.join(__dirname, entry),
       logGroup,
+      architecture: lambda.Architecture.ARM_64,
       runtime: lambda.Runtime.NODEJS_22_X,
       role: this.util.getLambdaAccessRole(),
       timeout: cdk.Duration.minutes(15),
