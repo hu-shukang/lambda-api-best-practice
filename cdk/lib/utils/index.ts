@@ -3,8 +3,9 @@ import { Role } from 'aws-cdk-lib/aws-iam';
 import { Bucket } from 'aws-cdk-lib/aws-s3';
 
 import { Context } from '../../bin/context';
+import { LambdaFactory } from './lambda.factory';
 
-export class ResourceFactory {
+export class Util {
   private scope: Stack;
   private context: Context;
   private cache: Map<string, IResource>;
@@ -16,7 +17,7 @@ export class ResourceFactory {
   }
 
   static init(scope: Stack, context: Context) {
-    return new ResourceFactory(scope, context);
+    return new Util(scope, context);
   }
 
   private getFromCache<T extends IResource>(key: string, func: () => T): T {
@@ -28,6 +29,10 @@ export class ResourceFactory {
     const newResource = func();
     this.cache.set(key, newResource);
     return newResource;
+  }
+
+  public getLambdaFactory() {
+    return LambdaFactory.init(this.scope, this.context, this);
   }
 
   public getCodePipelineRole() {

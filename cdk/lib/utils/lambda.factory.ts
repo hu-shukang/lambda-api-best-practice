@@ -2,54 +2,57 @@ import { Stack } from 'aws-cdk-lib';
 import * as cdk from 'aws-cdk-lib';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as node from 'aws-cdk-lib/aws-lambda-nodejs';
+import * as logs from 'aws-cdk-lib/aws-logs';
 import path from 'path';
 
 import { Context } from '../../bin/context';
-import { ResourceFactory } from './resource.factory';
+import { Util } from './index';
 
 export class LambdaFactory {
   private scope: Stack;
   private context: Context;
-  private resourceFactory: ResourceFactory;
+  private util: Util;
 
-  private constructor(scope: Stack, context: Context, resourceFactory: ResourceFactory) {
+  private constructor(scope: Stack, context: Context, util: Util) {
     this.scope = scope;
     this.context = context;
-    this.resourceFactory = resourceFactory;
+    this.util = util;
   }
 
-  static init(scope: Stack, context: Context, resourceFactory: ResourceFactory) {
-    return new LambdaFactory(scope, context, resourceFactory);
+  static init(scope: Stack, context: Context, util: Util) {
+    return new LambdaFactory(scope, context, util);
   }
 
-  private getEnvs() {
-    return {
+  private createFunction(id: string, entry: string): node.NodejsFunction {
+    const { apiName, suffix } = this.context;
+    const functionName = `${apiName}-${id}${suffix}`;
+
+    const logGroup = new logs.LogGroup(this.scope, `${id}-log-group`, {
+      logGroupName: `/aws/lambda/${functionName}`,
+      retention: logs.RetentionDays.ONE_MONTH,
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+    });
+
+    return new node.NodejsFunction(this.scope, functionName, {
+      functionName: functionName,
+      entry: path.join(__dirname, entry),
+      logGroup,
       runtime: lambda.Runtime.NODEJS_22_X,
-      role: this.resourceFactory.getLambdaAccessRole(),
+      role: this.util.getLambdaAccessRole(),
       timeout: cdk.Duration.minutes(15),
       memorySize: 1024,
       handler: 'handler',
       bundling: {
         format: node.OutputFormat.CJS,
       },
-    } as node.NodejsFunctionProps;
+    });
   }
 
   public createUserPostLambda() {
-    const { apiName, suffix } = this.context;
-    return new node.NodejsFunction(this.scope, `${apiName}-user-post-lambda${suffix}`, {
-      ...this.getEnvs(),
-      functionName: `${apiName}-user-post-lambda${suffix}`,
-      entry: path.join(__dirname, '../../src/functions/user/post/index.ts'),
-    });
+    return this.createFunction('user-post-lambda', '../../src/functions/user/post/index.ts');
   }
 
   public createUserListLambda() {
-    const { apiName, suffix } = this.context;
-    return new node.NodejsFunction(this.scope, `${apiName}-user-list-lambda${suffix}`, {
-      ...this.getEnvs(),
-      functionName: `${apiName}-user-list-lambda${suffix}`,
-      entry: path.join(__dirname, '../../src/functions/user/list/index.ts'),
-    });
+    return this.createFunction('user-list-lambda', '../../src/functions/user/list/index.ts');
   }
 }
