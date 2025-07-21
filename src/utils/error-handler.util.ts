@@ -7,8 +7,8 @@ type Props = {
 };
 
 export const httpErrorHandler = ({ logger }: Props) => {
-  const httpErrorHandlerOnError = async (request: Request<APIGatewayEvent, APIGatewayProxyResult>) => {
-    if (request.response !== undefined) return;
+  const handler = async (request: Request<APIGatewayEvent, APIGatewayProxyResult>) => {
+    if (request.response !== null) return;
     const error = request.error;
     if (!error) return;
     let message = error.message;
@@ -29,6 +29,6 @@ export const httpErrorHandler = ({ logger }: Props) => {
   };
 
   return {
-    onError: httpErrorHandlerOnError,
+    onError: handler,
   };
 };

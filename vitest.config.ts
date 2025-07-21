@@ -16,10 +16,6 @@ export default defineConfig({
         'vitest.config.ts',
       ],
     },
-    env: {
-      SIGNED_KEY_SECRET_NAME: 'test_secret',
-      DOMAIN: 'test.com',
-    },
   },
   resolve: {
     alias: {

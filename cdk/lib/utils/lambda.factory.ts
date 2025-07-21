@@ -49,8 +49,8 @@ export class LambdaFactory {
     });
   }
 
-  public createUserPostLambda() {
-    return this.createFunction('user-post-lambda', '../../src/functions/user/post/index.ts');
+  public createUserAddLambda() {
+    return this.createFunction('user-add-lambda', '../../src/functions/user/add/index.ts');
   }
 
   public createUserListLambda() {

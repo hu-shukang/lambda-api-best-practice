@@ -18,7 +18,7 @@ const isApiGatewayProxyResult = (response: unknown): response is APIGatewayProxy
  * API Gateway Proxy Result object.
  */
 export const httpResponseSerializer = () => {
-  const httpResponseSerializerAfter = async (request: Request): Promise<void> => {
+  const handler = async (request: Request): Promise<void> => {
     if (request.response === undefined || request.response === null) {
       request.response = {
         statusCode: 204,
@@ -41,6 +41,6 @@ export const httpResponseSerializer = () => {
   };
 
   return {
-    after: httpResponseSerializerAfter,
+    after: handler,
   };
 };

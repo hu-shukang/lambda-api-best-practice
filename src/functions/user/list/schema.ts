@@ -4,8 +4,10 @@ import { z } from 'zod';
 export const schema = APIGatewayProxyEventSchema.extend({
   queryStringParameters: z.object({
     name: z.string().nullish(),
-    offset: z.number().nullish(),
-    limit: z.number().nullish(),
+    email: z.string().nullish(),
+    address: z.string().nullish(),
+    offset: z.number(),
+    limit: z.number(),
   }),
 });
 export type ExtendedAPIGatewayEvent = z.infer<typeof schema>;

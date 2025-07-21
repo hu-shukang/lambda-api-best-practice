@@ -13,7 +13,7 @@ export class APIStack extends cdk.Stack {
     const util = Util.init(this, context);
 
     const lambdaFactory = util.getLambdaFactory();
-    const userPostLambda = lambdaFactory.createUserPostLambda();
+    const userAddLambda = lambdaFactory.createUserAddLambda();
     const userListLambda = lambdaFactory.createUserListLambda();
 
     const api = new apigateway.RestApi(this, `${apiName}${suffix}`, {
@@ -21,7 +21,7 @@ export class APIStack extends cdk.Stack {
     });
 
     const userResource = api.root.addResource('user');
-    userResource.addMethod('POST', new apigateway.LambdaIntegration(userPostLambda));
+    userResource.addMethod('POST', new apigateway.LambdaIntegration(userAddLambda));
     userResource.addMethod('GET', new apigateway.LambdaIntegration(userListLambda));
   }
 }

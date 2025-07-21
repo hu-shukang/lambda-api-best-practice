@@ -6,7 +6,8 @@ export const schema = APIGatewayProxyEventSchema.extend({
   body: JSONStringified(
     z.object({
       name: z.string(),
-      age: z.number(),
+      address: z.string(),
+      email: z.string().email(),
     }),
   ),
 });

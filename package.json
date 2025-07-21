@@ -14,7 +14,10 @@
   "dependencies": {
     "@aws-lambda-powertools/logger": "^2.22.0",
     "@aws-lambda-powertools/parser": "^2.22.0",
+    "@aws-sdk/client-rds-data": "^3.848.0",
     "@middy/core": "^4.7.0",
+    "kysely": "^0.27.6",
+    "kysely-data-api": "^2.0.0",
     "zod": "^3.25.67"
   },
   "devDependencies": {
