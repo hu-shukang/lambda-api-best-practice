@@ -5,13 +5,15 @@ import { parser } from '@aws-lambda-powertools/parser/middleware';
 import middy from '@middy/core';
 import { randomUUID } from 'crypto';
 
-import { db } from '@/database';
+import { createKysely } from '@/database';
 import { httpErrorHandler } from '@/utils/error-handler.util';
 import { httpResponseSerializer } from '@/utils/http-response-serializer.util';
 
 import { ExtendedAPIGatewayEvent, schema } from './schema';
 
 const logger = new Logger({ serviceName: 'ユーザ登録', correlationIdSearchFn: search });
+
+const db = createKysely(logger);
 
 const functionHandler = async (event: ExtendedAPIGatewayEvent) => {
   const id = randomUUID();
